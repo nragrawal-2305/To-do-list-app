@@ -81,9 +81,7 @@ import java.util.Calendar
 // ================================================================
 
 private const val CHANNEL_ID = "todo_reminder_channel_v3"
-
 private const val PREFS_NAME = "todo_prefs"
-
 private const val TASK_COUNT_KEY = "task_count"
 
 
@@ -320,11 +318,6 @@ class MainActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
 
-
-        // ========================================================
-        // CREATE NOTIFICATION CHANNEL
-        // ========================================================
-
         createNotificationChannel()
 
 
@@ -371,7 +364,6 @@ class MainActivity : ComponentActivity() {
             ToDoListTheme {
 
                 val context = LocalContext.current
-
 
                 var taskText by remember {
                     mutableStateOf("")
@@ -515,15 +507,9 @@ class MainActivity : ComponentActivity() {
                             Column {
 
                                 Text(
-
-                                    text =
-                                        "✨ My Tasks",
-
-                                    fontSize =
-                                        30.sp,
-
-                                    fontWeight =
-                                        FontWeight.Bold
+                                    text = "✨ My Tasks",
+                                    fontSize = 30.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
 
                                 Spacer(
@@ -532,13 +518,9 @@ class MainActivity : ComponentActivity() {
                                 )
 
                                 Text(
-
                                     text =
                                         "Stay organized and get things done!",
-
-                                    fontSize =
-                                        14.sp,
-
+                                    fontSize = 14.sp,
                                     color =
                                         MaterialTheme
                                             .colorScheme
@@ -555,11 +537,9 @@ class MainActivity : ComponentActivity() {
 
                                 Text(
 
-                                    text =
-                                        "⋮",
+                                    text = "⋮",
 
-                                    fontSize =
-                                        30.sp,
+                                    fontSize = 30.sp,
 
                                     modifier =
                                         Modifier
@@ -717,13 +697,10 @@ class MainActivity : ComponentActivity() {
                             ) {
 
                                 Text(
-
                                     text =
                                         "📝 Add a new task",
-
                                     fontSize =
                                         18.sp,
-
                                     fontWeight =
                                         FontWeight.Bold
                                 )
@@ -734,10 +711,6 @@ class MainActivity : ComponentActivity() {
                                         Modifier.height(12.dp)
                                 )
 
-
-                                // =================================================
-                                // TASK NAME
-                                // =================================================
 
                                 OutlinedTextField(
 
@@ -792,7 +765,6 @@ class MainActivity : ComponentActivity() {
                                     )
 
 
-                                    // Transparent clickable layer
                                     Box(
 
                                         modifier =
@@ -896,10 +868,6 @@ class MainActivity : ComponentActivity() {
                                                 editingIndex >= 0
                                             ) {
 
-                                                // ================================
-                                                // UPDATE TASK
-                                                // ================================
-
                                                 val oldTask =
                                                     tasks[editingIndex]
 
@@ -914,10 +882,6 @@ class MainActivity : ComponentActivity() {
                                                             selectedLabel
                                                     )
 
-
-                                                // ================================
-                                                // MOVE REMINDER IF NAME CHANGED
-                                                // ================================
 
                                                 if (
                                                     oldTask.name !=
@@ -960,10 +924,6 @@ class MainActivity : ComponentActivity() {
 
                                             } else {
 
-                                                // ================================
-                                                // ADD TASK
-                                                // ================================
-
                                                 tasks.add(
 
                                                     Task(
@@ -982,10 +942,6 @@ class MainActivity : ComponentActivity() {
                                                 ).show()
                                             }
 
-
-                                            // ================================
-                                            // SAVE
-                                            // ================================
 
                                             saveTasks(
                                                 sharedPreferences,
@@ -1082,7 +1038,6 @@ class MainActivity : ComponentActivity() {
                                             ignoreCase = true
                                         )
 
-
                                     val matchesFilter =
 
                                         when (
@@ -1101,7 +1056,6 @@ class MainActivity : ComponentActivity() {
                                             else ->
                                                 true
                                         }
-
 
                                     matchesSearch &&
                                             matchesFilter
@@ -1152,13 +1106,10 @@ class MainActivity : ComponentActivity() {
                                     )
 
                                     Text(
-
                                         text =
                                             "No tasks found",
-
                                         fontSize =
                                             16.sp,
-
                                         fontWeight =
                                             FontWeight.Medium
                                     )
@@ -1185,7 +1136,7 @@ class MainActivity : ComponentActivity() {
 
 
                                 // =================================================
-                                // FULL LABEL COLOURED TASK CARD
+                                // TASK CARD
                                 // =================================================
 
                                 Card(
@@ -1211,103 +1162,110 @@ class MainActivity : ComponentActivity() {
 
                                 ) {
 
-                                    Row(
+                                    // =================================================
+                                    // MAIN TASK CONTENT
+                                    // =================================================
+
+                                    Column(
 
                                         modifier =
                                             Modifier
                                                 .fillMaxWidth()
-                                                .padding(12.dp),
-
-                                        verticalAlignment =
-                                            Alignment.CenterVertically
+                                                .padding(12.dp)
 
                                     ) {
 
                                         // =========================================
-                                        // CHECKBOX
+                                        // TOP ROW
                                         // =========================================
 
-                                        Checkbox(
-
-                                            checked =
-                                                taskItem.completed,
-
-                                            onCheckedChange = {
-
-                                                tasks[originalIndex] =
-                                                    taskItem.copy(
-                                                        completed = it
-                                                    )
-
-                                                saveTasks(
-                                                    sharedPreferences,
-                                                    tasks
-                                                )
-                                            }
-                                        )
-
-
-                                        Spacer(
-                                            modifier =
-                                                Modifier.width(6.dp)
-                                        )
-
-
-                                        // =========================================
-                                        // PRIORITY
-                                        // =========================================
-
-                                        Box(
+                                        Row(
 
                                             modifier =
-                                                Modifier
-                                                    .size(24.dp)
-                                                    .clickable {
+                                                Modifier.fillMaxWidth(),
 
-                                                        tasks[originalIndex] =
-                                                            taskItem.copy(
-                                                                priority =
-                                                                    !taskItem.priority
-                                                            )
-
-                                                        saveTasks(
-                                                            sharedPreferences,
-                                                            tasks
-                                                        )
-                                                    }
-                                                    .padding(5.dp)
-                                                    .background(
-
-                                                        if (
-                                                            taskItem.priority
-                                                        )
-                                                            Color(
-                                                                0xFFE53935
-                                                            )
-                                                        else
-                                                            Color.Gray,
-
-                                                        CircleShape
-                                                    )
-                                        )
-
-
-                                        Spacer(
-                                            modifier =
-                                                Modifier.width(10.dp)
-                                        )
-
-
-                                        // =========================================
-                                        // TASK DETAILS
-                                        // =========================================
-
-                                        Column(
-
-                                            modifier =
-                                                Modifier.weight(1f)
+                                            verticalAlignment =
+                                                Alignment.Top
 
                                         ) {
+
+                                            // =====================================
+                                            // CHECKBOX
+                                            // =====================================
+
+                                            Checkbox(
+
+                                                checked =
+                                                    taskItem.completed,
+
+                                                onCheckedChange = {
+
+                                                    tasks[originalIndex] =
+                                                        taskItem.copy(
+                                                            completed = it
+                                                        )
+
+                                                    saveTasks(
+                                                        sharedPreferences,
+                                                        tasks
+                                                    )
+                                                }
+                                            )
+
+
+                                            Spacer(
+                                                modifier =
+                                                    Modifier.width(4.dp)
+                                            )
+
+
+                                            // =====================================
+                                            // PRIORITY DOT
+                                            // =====================================
+
+                                            Box(
+
+                                                modifier =
+                                                    Modifier
+                                                        .padding(
+                                                            top = 14.dp
+                                                        )
+                                                        .size(24.dp)
+                                                        .clickable {
+
+                                                            tasks[originalIndex] =
+                                                                taskItem.copy(
+                                                                    priority =
+                                                                        !taskItem.priority
+                                                                )
+
+                                                            saveTasks(
+                                                                sharedPreferences,
+                                                                tasks
+                                                            )
+                                                        }
+                                                        .padding(5.dp)
+                                                        .background(
+
+                                                            if (
+                                                                taskItem.priority
+                                                            )
+                                                                Color(
+                                                                    0xFFE53935
+                                                                )
+                                                            else
+                                                                Color.Gray,
+
+                                                            CircleShape
+                                                        )
+                                            )
+
+
+                                            Spacer(
+                                                modifier =
+                                                    Modifier.width(10.dp)
+                                            )
+
 
                                             // =====================================
                                             // TASK NAME
@@ -1325,145 +1283,189 @@ class MainActivity : ComponentActivity() {
                                                     FontWeight.SemiBold,
 
                                                 modifier =
-                                                    Modifier.alpha(
-
-                                                        if (
-                                                            taskItem.completed
+                                                    Modifier
+                                                        .weight(1f)
+                                                        .padding(
+                                                            top = 11.dp
                                                         )
-                                                            0.5f
-                                                        else
-                                                            1f
-                                                    )
+                                                        .alpha(
+
+                                                            if (
+                                                                taskItem.completed
+                                                            )
+                                                                0.5f
+                                                            else
+                                                                1f
+                                                        )
+                                            )
+                                        }
+
+
+                                        Spacer(
+                                            modifier =
+                                                Modifier.height(6.dp)
+                                        )
+
+
+                                        // =========================================
+                                        // LABEL + REMINDER INFORMATION
+                                        // =========================================
+
+                                        Row(
+
+                                            modifier =
+                                                Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(
+                                                        start = 52.dp
+                                                    ),
+
+                                            verticalAlignment =
+                                                Alignment.CenterVertically
+
+                                        ) {
+
+                                            Box(
+
+                                                modifier =
+                                                    Modifier
+                                                        .size(7.dp)
+                                                        .background(
+                                                            getLabelColor(
+                                                                taskItem.label
+                                                            ),
+                                                            CircleShape
+                                                        )
                                             )
 
 
                                             Spacer(
                                                 modifier =
-                                                    Modifier.height(5.dp)
+                                                    Modifier.width(5.dp)
                                             )
 
 
-                                            // =====================================
-                                            // LABEL
-                                            // NO PILL BACKGROUND
-                                            // =====================================
+                                            Text(
 
-                                            Row(
+                                                text =
+                                                    "${getLabelEmoji(taskItem.label)} ${taskItem.label}",
 
-                                                verticalAlignment =
-                                                    Alignment.CenterVertically
+                                                fontSize =
+                                                    11.sp,
 
-                                            ) {
+                                                fontWeight =
+                                                    FontWeight.Bold,
 
-                                                // Small colored dot
-
-                                                Box(
-
-                                                    modifier =
-                                                        Modifier
-                                                            .size(7.dp)
-                                                            .background(
-                                                                getLabelColor(
-                                                                    taskItem.label
-                                                                ),
-                                                                CircleShape
-                                                            )
-                                                )
-
-
-                                                Spacer(
-                                                    modifier =
-                                                        Modifier.width(5.dp)
-                                                )
-
-
-                                                Text(
-
-                                                    text =
-                                                        "${getLabelEmoji(taskItem.label)} ${taskItem.label}",
-
-                                                    fontSize =
-                                                        11.sp,
-
-                                                    fontWeight =
-                                                        FontWeight.Bold,
-
-                                                    color =
-                                                        getLabelColor(
-                                                            taskItem.label
-                                                        )
-                                                )
-                                            }
-
-
-                                            // =====================================
-                                            // REMINDER
-                                            // =====================================
-
-                                            if (
-                                                reminderTime > 0L
-                                            ) {
-
-                                                Spacer(
-                                                    modifier =
-                                                        Modifier.height(4.dp)
-                                                )
-
-
-                                                Text(
-
-                                                    text =
-                                                        "⏰ Reminder: ${
-                                                            formatReminderTime(
-                                                                reminderTime
-                                                            )
-                                                        }",
-
-                                                    fontSize =
-                                                        12.sp,
-
-                                                    fontWeight =
-                                                        FontWeight.Medium,
-
-                                                    color =
-                                                        Color(0xFF16A34A)
-                                                )
-                                            }
+                                                color =
+                                                    getLabelColor(
+                                                        taskItem.label
+                                                    )
+                                            )
                                         }
 
 
                                         // =========================================
-                                        // REMINDER BUTTON
+                                        // REMINDER TEXT
                                         // =========================================
 
-                                        TextButton(
+                                        if (
+                                            reminderTime > 0L
+                                        ) {
 
-                                            onClick = {
+                                            Spacer(
+                                                modifier =
+                                                    Modifier.height(4.dp)
+                                            )
 
-                                                pendingTaskName =
-                                                    taskItem.name
+
+                                            Text(
+
+                                                text =
+                                                    "⏰ Reminder: ${
+                                                        formatReminderTime(
+                                                            reminderTime
+                                                        )
+                                                    }",
+
+                                                fontSize =
+                                                    12.sp,
+
+                                                fontWeight =
+                                                    FontWeight.Medium,
+
+                                                color =
+                                                    Color(0xFF16A34A),
+
+                                                modifier =
+                                                    Modifier.padding(
+                                                        start = 52.dp
+                                                    )
+                                            )
+                                        }
 
 
-                                                if (
-                                                    Build.VERSION.SDK_INT >=
-                                                    Build.VERSION_CODES.TIRAMISU
-                                                ) {
+                                        Spacer(
+                                            modifier =
+                                                Modifier.height(4.dp)
+                                        )
+
+
+                                        // =========================================
+                                        // ACTION BUTTONS
+                                        // =========================================
+
+                                        Row(
+
+                                            modifier =
+                                                Modifier.fillMaxWidth(),
+
+                                            horizontalArrangement =
+                                                Arrangement.End,
+
+                                            verticalAlignment =
+                                                Alignment.CenterVertically
+
+                                        ) {
+
+                                            // =====================================
+                                            // REMINDER BUTTON
+                                            // =====================================
+
+                                            TextButton(
+
+                                                onClick = {
+
+                                                    pendingTaskName =
+                                                        taskItem.name
+
 
                                                     if (
-
-                                                        ContextCompat
-                                                            .checkSelfPermission(
-                                                                context,
-                                                                Manifest.permission.POST_NOTIFICATIONS
-                                                            ) !=
-                                                        PackageManager.PERMISSION_GRANTED
-
+                                                        Build.VERSION.SDK_INT >=
+                                                        Build.VERSION_CODES.TIRAMISU
                                                     ) {
 
-                                                        notificationPermissionLauncher
-                                                            .launch(
-                                                                Manifest.permission.POST_NOTIFICATIONS
+                                                        if (
+
+                                                            ContextCompat
+                                                                .checkSelfPermission(
+                                                                    context,
+                                                                    Manifest.permission.POST_NOTIFICATIONS
+                                                                ) !=
+                                                            PackageManager.PERMISSION_GRANTED
+
+                                                        ) {
+
+                                                            notificationPermissionLauncher
+                                                                .launch(
+                                                                    Manifest.permission.POST_NOTIFICATIONS
+                                                                )
+
+                                                        } else {
+
+                                                            setReminder(
+                                                                context
                                                             )
+                                                        }
 
                                                     } else {
 
@@ -1471,82 +1473,76 @@ class MainActivity : ComponentActivity() {
                                                             context
                                                         )
                                                     }
-
-                                                } else {
-
-                                                    setReminder(
-                                                        context
-                                                    )
                                                 }
+
+                                            ) {
+
+                                                Text("⏰")
                                             }
 
-                                        ) {
 
-                                            Text("⏰")
-                                        }
+                                            // =====================================
+                                            // EDIT BUTTON
+                                            // =====================================
 
+                                            TextButton(
 
-                                        // =========================================
-                                        // EDIT BUTTON
-                                        // =========================================
+                                                onClick = {
 
-                                        TextButton(
+                                                    taskText =
+                                                        taskItem.name
 
-                                            onClick = {
+                                                    selectedLabel =
+                                                        taskItem.label
 
-                                                taskText =
-                                                    taskItem.name
+                                                    editingIndex =
+                                                        originalIndex
+                                                }
 
-                                                selectedLabel =
-                                                    taskItem.label
+                                            ) {
 
-                                                editingIndex =
-                                                    originalIndex
+                                                Text("✏️")
                                             }
 
-                                        ) {
 
-                                            Text("✏️")
-                                        }
+                                            // =====================================
+                                            // DELETE BUTTON
+                                            // =====================================
+
+                                            TextButton(
+
+                                                onClick = {
+
+                                                    sharedPreferences
+                                                        .edit()
+                                                        .remove(
+                                                            "reminder_${taskItem.name}"
+                                                        )
+                                                        .apply()
 
 
-                                        // =========================================
-                                        // DELETE BUTTON
-                                        // =========================================
-
-                                        TextButton(
-
-                                            onClick = {
-
-                                                sharedPreferences
-                                                    .edit()
-                                                    .remove(
-                                                        "reminder_${taskItem.name}"
+                                                    tasks.removeAt(
+                                                        originalIndex
                                                     )
-                                                    .apply()
 
 
-                                                tasks.removeAt(
-                                                    originalIndex
-                                                )
+                                                    saveTasks(
+                                                        sharedPreferences,
+                                                        tasks
+                                                    )
 
 
-                                                saveTasks(
-                                                    sharedPreferences,
-                                                    tasks
-                                                )
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Task deleted",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
 
+                                            ) {
 
-                                                Toast.makeText(
-                                                    context,
-                                                    "Task deleted",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
+                                                Text("🗑️")
                                             }
-
-                                        ) {
-
-                                            Text("🗑️")
                                         }
                                     }
                                 }
@@ -1572,7 +1568,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
 
         super.onResume()
-
 
         if (
 
@@ -1642,7 +1637,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
         scheduleDailyNotifications(this)
     }
 
@@ -1660,14 +1654,11 @@ class MainActivity : ComponentActivity() {
                 timeInMillis = timeMillis
             }
 
-
         val hour =
             calendar.get(Calendar.HOUR)
 
-
         val minute =
             calendar.get(Calendar.MINUTE)
-
 
         val amPm =
 
@@ -1679,14 +1670,12 @@ class MainActivity : ComponentActivity() {
             else
                 "PM"
 
-
         val displayHour =
 
             if (hour == 0)
                 12
             else
                 hour
-
 
         return String.format(
             "%02d:%02d %s",
@@ -1708,11 +1697,9 @@ class MainActivity : ComponentActivity() {
         val taskName =
             pendingTaskName
 
-
         if (taskName == null) {
             return
         }
-
 
         val calendar =
             Calendar.getInstance()
@@ -1836,10 +1823,8 @@ class MainActivity : ComponentActivity() {
         val taskName =
             pendingTaskName
 
-
         val reminderTime =
             pendingReminderTime
-
 
         if (
             taskName == null ||
@@ -1888,7 +1873,6 @@ class MainActivity : ComponentActivity() {
 
 
         pendingTaskName = null
-
         pendingReminderTime = 0L
     }
 
@@ -1957,10 +1941,6 @@ class MainActivity : ComponentActivity() {
             )
 
 
-        // ========================================================
-        // EXACT ALARM PERMISSION
-        // ========================================================
-
         if (
             Build.VERSION.SDK_INT >=
             Build.VERSION_CODES.S
@@ -2004,10 +1984,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
-        // ========================================================
-        // SET EXACT ALARM
-        // ========================================================
 
         try {
 
@@ -2064,9 +2040,7 @@ class MainActivity : ComponentActivity() {
                     description =
                         "Task and daily reminders"
 
-
                     enableVibration(true)
-
 
                     vibrationPattern =
                         longArrayOf(
@@ -2076,9 +2050,7 @@ class MainActivity : ComponentActivity() {
                             500
                         )
 
-
                     setShowBadge(true)
-
 
                     enableLights(true)
                 }
@@ -2101,17 +2073,12 @@ fun scheduleDailyNotifications(
     context: Context
 ) {
 
-    // 🌅 MORNING — 9:00 AM
-
     scheduleDailyNotification(
         context,
         9,
         0,
         MORNING_NOTIFICATION_CODE
     )
-
-
-    // ☀️ NOON — 12:00 PM
 
     scheduleDailyNotification(
         context,
@@ -2120,9 +2087,6 @@ fun scheduleDailyNotifications(
         NOON_NOTIFICATION_CODE
     )
 
-
-    // 🌤️ AFTERNOON — 3:00 PM
-
     scheduleDailyNotification(
         context,
         15,
@@ -2130,18 +2094,12 @@ fun scheduleDailyNotifications(
         AFTERNOON_NOTIFICATION_CODE
     )
 
-
-    // 🌆 EVENING — 6:00 PM
-
     scheduleDailyNotification(
         context,
         18,
         0,
         EVENING_NOTIFICATION_CODE
     )
-
-
-    // 🌙 NIGHT — 9:00 PM
 
     scheduleDailyNotification(
         context,
@@ -2211,10 +2169,6 @@ private fun scheduleDailyNotification(
         }
 
 
-    // ================================================================
-    // NOTIFICATION TYPE
-    // ================================================================
-
     val notificationType =
 
         when (requestCode) {
@@ -2269,10 +2223,6 @@ private fun scheduleDailyNotification(
         )
 
 
-    // ================================================================
-    // EXACT ALARM PERMISSION
-    // ================================================================
-
     if (
         Build.VERSION.SDK_INT >=
         Build.VERSION_CODES.S
@@ -2286,10 +2236,6 @@ private fun scheduleDailyNotification(
         }
     }
 
-
-    // ================================================================
-    // SET ALARM
-    // ================================================================
 
     try {
 
@@ -2305,8 +2251,7 @@ private fun scheduleDailyNotification(
     } catch (
         e: SecurityException
     ) {
-
-        // Exact alarm permission unavailable
+        // Permission unavailable
     }
 }
 
@@ -2323,10 +2268,6 @@ private fun getNotificationMessage(
 
         when (type) {
 
-            // ========================================================
-            // MORNING
-            // ========================================================
-
             "morning" ->
 
                 listOf(
@@ -2340,10 +2281,6 @@ private fun getNotificationMessage(
                     "A fresh day means a fresh chance to get things done. 🌅"
                 )
 
-
-            // ========================================================
-            // NOON
-            // ========================================================
 
             "noon" ->
 
@@ -2359,10 +2296,6 @@ private fun getNotificationMessage(
                 )
 
 
-            // ========================================================
-            // AFTERNOON
-            // ========================================================
-
             "afternoon" ->
 
                 listOf(
@@ -2376,10 +2309,6 @@ private fun getNotificationMessage(
                     "Keep the momentum going! One more task. 🚀"
                 )
 
-
-            // ========================================================
-            // EVENING
-            // ========================================================
 
             "evening" ->
 
@@ -2395,10 +2324,6 @@ private fun getNotificationMessage(
                 )
 
 
-            // ========================================================
-            // NIGHT
-            // ========================================================
-
             "night" ->
 
                 listOf(
@@ -2412,10 +2337,6 @@ private fun getNotificationMessage(
                     "Good night! Don't forget your unfinished tasks. 🌙"
                 )
 
-
-            // ========================================================
-            // DEFAULT
-            // ========================================================
 
             else ->
 
@@ -2435,7 +2356,6 @@ private fun getNotificationMessage(
 
 class ReminderReceiver : BroadcastReceiver() {
 
-
     override fun onReceive(
 
         context: Context,
@@ -2444,18 +2364,10 @@ class ReminderReceiver : BroadcastReceiver() {
 
     ) {
 
-        // ============================================================
-        // CREATE CHANNEL
-        // ============================================================
-
         createReceiverNotificationChannel(
             context
         )
 
-
-        // ============================================================
-        // GET DATA
-        // ============================================================
 
         val notificationType =
 
@@ -2478,10 +2390,6 @@ class ReminderReceiver : BroadcastReceiver() {
                 .from(context)
 
 
-        // ============================================================
-        // ANDROID 13+ PERMISSION
-        // ============================================================
-
         if (
             Build.VERSION.SDK_INT >=
             Build.VERSION_CODES.TIRAMISU
@@ -2502,18 +2410,9 @@ class ReminderReceiver : BroadcastReceiver() {
         }
 
 
-        // ============================================================
-        // TITLE + MESSAGE
-        // ============================================================
-
         val title: String
-
         val message: String
 
-
-        // ============================================================
-        // TASK REMINDER
-        // ============================================================
 
         if (
             notificationType == "task"
@@ -2522,16 +2421,11 @@ class ReminderReceiver : BroadcastReceiver() {
             title =
                 "⏰ Task Reminder"
 
-
             message =
                 taskName
                     ?: "You have a task to complete!"
 
         } else {
-
-            // ========================================================
-            // DAILY NOTIFICATION
-            // ========================================================
 
             title =
 
@@ -2565,10 +2459,6 @@ class ReminderReceiver : BroadcastReceiver() {
                 )
         }
 
-
-        // ============================================================
-        // NOTIFICATION
-        // ============================================================
 
         val notification =
 
@@ -2622,10 +2512,6 @@ class ReminderReceiver : BroadcastReceiver() {
                 .build()
 
 
-        // ============================================================
-        // SHOW NOTIFICATION
-        // ============================================================
-
         notificationManager.notify(
 
             System.currentTimeMillis()
@@ -2634,10 +2520,6 @@ class ReminderReceiver : BroadcastReceiver() {
             notification
         )
 
-
-        // ============================================================
-        // RESCHEDULE NEXT DAY
-        // ============================================================
 
         if (
             notificationType != "task"
@@ -2750,11 +2632,9 @@ class ReminderReceiver : BroadcastReceiver() {
                     description =
                         "Task and daily reminders"
 
-
                     enableVibration(
                         true
                     )
-
 
                     vibrationPattern =
                         longArrayOf(
@@ -2764,11 +2644,9 @@ class ReminderReceiver : BroadcastReceiver() {
                             500
                         )
 
-
                     setShowBadge(
                         true
                     )
-
 
                     enableLights(
                         true
@@ -2782,6 +2660,5 @@ class ReminderReceiver : BroadcastReceiver() {
         }
     }
 }
-
 
 
